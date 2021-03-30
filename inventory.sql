@@ -1,0 +1,4 @@
+DROP DATABASE IF EXISTS inventory_ACNH;
+CREATE DATABASE inventory_ACNH;
+
+USE inventory_ACNH;
