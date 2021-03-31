@@ -14,5 +14,6 @@ CREATE TABLE trades(
     nmt BOOLEAN NOT NULL,
     average_nmt INT default 0,
     sent_taylor BOOLEAN NOT NULL,
+    creator VARCHAR(45) NOT NULL,
     PRIMARY KEY (id)
 );

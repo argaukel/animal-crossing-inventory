@@ -6,7 +6,7 @@ var connection = mysql.createConnection ({
     port: 3306,
     user: "newuser",
     password: "password",
-    database: "bay_db"
+    database: "inventory_ACNH"
 });
 
 connection.connect(function (error) {
@@ -15,6 +15,7 @@ connection.connect(function (error) {
     login();
 });
 
+// "login" function
 function login() {
     inquirer.prompt([{
             name: "userName",
@@ -30,9 +31,20 @@ function login() {
         userName = answers.userName;
         console.log(userName);
         newItem();
+        // postDB()
     })
 };
 
+// query all items
+function postDB() {
+    connection.query("SELECT * FROM trades", function(error, response) {
+        if (error) throw (error);
+        console.table(response);
+    })
+    connection.end();
+}
+
+// post new item to db
 function newItem() {
     inquirer.prompt([
         {
@@ -44,7 +56,7 @@ function newItem() {
             type: "list",
             name: "category",
             message: "What is the category?",
-            choices: ["Clothing", "DIY", "Flooring", "Fossil", "Gullivers"]
+            choices: ["Clothing", "DIY", "Flooring", "Fossil", "Gullivers", "Rugs"]
         },
         {
             type: "confirm",
@@ -65,9 +77,15 @@ function newItem() {
             default: false
         }
     ])
-    .then(function(inquirerResponse) {
-        console.log(inquirerResponse);
-        connection.end();
+    .then(function(answers) {
+        console.log(answers);
+        answers.creator = userName;
+        let query = connection.query("INSERT INTO trades SET ?", answers, (error, response) => {
+            console.log(query.sql);
+            postDB();
+            // connection.end();
+        })
+        
     })
 }
 
