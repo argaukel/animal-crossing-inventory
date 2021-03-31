@@ -44,7 +44,7 @@ function newItem() {
             type: "list",
             name: "category",
             message: "What is the category?",
-            choices: ["DIY", "Flooring", "Fossil", "Gullivers"]
+            choices: ["Clothing", "DIY", "Flooring", "Fossil", "Gullivers"]
         },
         {
             type: "confirm",
@@ -57,6 +57,12 @@ function newItem() {
             name: "nmt",
             message: "Asking for Nook Miles Tickets?",
             default: true
+        },
+        {
+            type: "confirm",
+            name: "sent_taylor",
+            message: "Did you send one to Taylor?",
+            default: false
         }
     ])
     .then(function(inquirerResponse) {
