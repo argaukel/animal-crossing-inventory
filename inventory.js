@@ -30,8 +30,11 @@ function login() {
     .then(answers => {
         userName = answers.userName;
         console.log(userName);
-        newItem();
+        
+        // newItem();
         // displayDB()
+        viewDB();
+        // updateQuantity();
     })
 };
 
@@ -42,6 +45,17 @@ function displayDB() {
         console.table(response);
     })
     connection.end();
+}
+
+// display db based on username
+function viewDB() {
+    connection.query("SELECT * FROM trades WHERE ?", [{
+        creator: userName
+    }], (error, results) => {
+        console.table(results);
+        updateQuantity(results);
+        
+    })
 }
 
 // post new item to db
@@ -89,15 +103,24 @@ function newItem() {
     })
 };
 
+// update quantity of item listing
+function updateQuantity(results) {
+    // connection.query("SELECT * FROM trades WHERE?", [{
+    //     creator: userName
+    // }], (error, results) => {
+        inquirer.prompt([{
+            name: "itemName",
+            message: "Which item do you want to edit?",
+            type: "list",
+            choices: results.map(trades => trades.item_name)
+        }])
+        .then(answers => {
+            console.log(answers)
+        })
+    }
+    // )}
 
-// general db management
-function manageDB() {
-    connection.query("SELECT * FROM trades WHERE ?", [{
-        creator: userName
-    }], (error, results) => {
-        console.table(results);
-        
-    })
-}
+
+
 
 
