@@ -29,6 +29,33 @@ function login() {
     .then(answers => {
         userName = answers.userName;
         console.log(userName);
+        newItem();
     })
 };
+
+function newItem() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "item_name",
+            message: "Item Name"
+        },
+        {
+            type: "list",
+            name: "category",
+            message: "What is the category?",
+            choices: ["DIY", "Flooring", "Fossil", "Gullivers"]
+        },
+        {
+            type: "confirm",
+            name: "bells",
+            message: "Asking for Bells?",
+            default: true
+        }
+    ])
+    .then(function(inquirerResponse) {
+        console.log(inquirerResponse);
+        connection.end();
+    })
+}
 
