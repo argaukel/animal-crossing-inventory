@@ -31,12 +31,12 @@ function login() {
         userName = answers.userName;
         console.log(userName);
         newItem();
-        // postDB()
+        // displayDB()
     })
 };
 
 // query all items
-function postDB() {
+function displayDB() {
     connection.query("SELECT * FROM trades", function(error, response) {
         if (error) throw (error);
         console.table(response);
@@ -82,10 +82,22 @@ function newItem() {
         answers.creator = userName;
         let query = connection.query("INSERT INTO trades SET ?", answers, (error, response) => {
             console.log(query.sql);
-            postDB();
+            displayDB();
             // connection.end();
         })
         
     })
+};
+
+
+// general db management
+function manageDB() {
+    connection.query("SELECT * FROM trades WHERE ?", [{
+        creator: userName
+    }], (error, results) => {
+        console.table(results);
+        
+    })
 }
+
 
