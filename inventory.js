@@ -51,6 +51,12 @@ function newItem() {
             name: "bells",
             message: "Asking for Bells?",
             default: true
+        },
+        {
+            type: "confirm",
+            name: "nmt",
+            message: "Asking for Nook Miles Tickets?",
+            default: true
         }
     ])
     .then(function(inquirerResponse) {
