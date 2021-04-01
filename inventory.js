@@ -116,6 +116,12 @@ function updateQuantity(results) {
         }])
         .then(answers => {
             console.log(answers)
+            let itemToEdit = results.find(trades => trades.item_name == answers.itemName);
+            inquirer.prompt([{
+                type: "input",
+                name: "invt_quantity",
+                message: `Update Inventory Quantity: (${itemToEdit.invt_quantity})`
+            }])
         })
     }
     // )}
