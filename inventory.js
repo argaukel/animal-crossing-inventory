@@ -54,7 +54,7 @@ function menu() {
             name: "selection",
             message: "What would you like to do?",
             type: "list",
-            choices: ["New Item", "Edit current Item", "Remove Item"]
+            choices: ["New Item", "Edit current Item"]
         }).then(answers => {
             if (answers.selection == "New Item") {
                 newItem();
@@ -72,10 +72,12 @@ function editMenu(results) {
         name: "selectionEdit",
         type: "list",
         message: "What would you like to edit?",
-        choices: ["Edit Quantity"]
+        choices: ["Edit Quantity", "Edit Amount Sold"]
     }).then(answers => {
         if (answers.selectionEdit == "Edit Quantity") {
             updateQuantity(results);
+        } else if (answers.selectionEdit == "Edit Amount Sold") {
+            updateSold(results);
         }
     })
 }
@@ -149,7 +151,30 @@ function updateQuantity(results) {
             })
         })
     }
-    
+
+// update number of sold items 
+function updateSold(results) {
+    inquirer.prompt([{
+        name: "itemName",
+        message: "Which item do you want to edit?",
+        type: "list",
+        choices: results.map(trades => trades.item_name)
+    }])
+    .then(answers => {
+        let itemToEdit = results.find(trades => trades.item_name == answers.itemName);
+        inquirer.prompt([{
+            type: "input",
+            name: "sold_quantity",
+            message: `Update Inventory Sold: (${itemToEdit.sold_quantity})`
+        }]).then(answers => {
+            connection.query("UPDATE trades SET ? WHERE ?", [answers, {
+                id: itemToEdit.id
+            }], (error, response) => {
+                menu();
+            })
+        })
+    })
+}    
 
 
 
