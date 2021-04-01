@@ -30,11 +30,7 @@ function login() {
     .then(answers => {
         userName = answers.userName;
         console.log(userName);
-        
-        // newItem();
-        // displayDB()
-        viewDB();
-        // updateQuantity();
+        menu();
     })
 };
 
@@ -48,13 +44,22 @@ function displayDB() {
 }
 
 // display db based on username
-function viewDB() {
+function menu() {
     connection.query("SELECT * FROM trades WHERE ?", [{
         creator: userName
     }], (error, results) => {
         console.table(results);
-        updateQuantity(results);
-        
+        inquirer.prompt({
+            type: "list",
+            name: "selection",
+            type: "list",
+            choices: ["New Item", "Edit current Item", "Remove Item"]
+        }).then(answers => {
+            if (answers.selection == "New Item") {
+                newItem();
+            }
+        })
+        // updateQuantity(results);
     })
 }
 
@@ -96,7 +101,7 @@ function newItem() {
         answers.creator = userName;
         let query = connection.query("INSERT INTO trades SET ?", answers, (error, response) => {
             console.log(query.sql);
-            displayDB();
+            menu();
             // connection.end();
         })
         
