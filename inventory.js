@@ -121,7 +121,13 @@ function updateQuantity(results) {
                 type: "input",
                 name: "invt_quantity",
                 message: `Update Inventory Quantity: (${itemToEdit.invt_quantity})`
-            }])
+            }]).then(answers => {
+                connection.query("UPDATE trades SET ? WHERE ?", [answers, {
+                    id: itemToEdit.id
+                }], (error, response) => {
+                    connection.end();
+                })
+            })
         })
     }
     // )}
