@@ -52,14 +52,31 @@ function menu() {
         inquirer.prompt({
             type: "list",
             name: "selection",
+            message: "What would you like to do?",
             type: "list",
             choices: ["New Item", "Edit current Item", "Remove Item"]
         }).then(answers => {
             if (answers.selection == "New Item") {
                 newItem();
+            } else if (answers.selection == "Edit current Item") {
+                editMenu(results); 
             }
         })
-        // updateQuantity(results);
+    })
+}
+
+// menu for various item edits
+function editMenu(results) {
+    inquirer.prompt({
+        type: "list",
+        name: "selectionEdit",
+        type: "list",
+        message: "What would you like to edit?",
+        choices: ["Edit Quantity"]
+    }).then(answers => {
+        if (answers.selectionEdit == "Edit Quantity") {
+            updateQuantity(results);
+        }
     })
 }
 
@@ -110,9 +127,6 @@ function newItem() {
 
 // update quantity of item listing
 function updateQuantity(results) {
-    // connection.query("SELECT * FROM trades WHERE?", [{
-    //     creator: userName
-    // }], (error, results) => {
         inquirer.prompt([{
             name: "itemName",
             message: "Which item do you want to edit?",
@@ -130,12 +144,12 @@ function updateQuantity(results) {
                 connection.query("UPDATE trades SET ? WHERE ?", [answers, {
                     id: itemToEdit.id
                 }], (error, response) => {
-                    connection.end();
+                    menu();
                 })
             })
         })
     }
-    // )}
+    
 
 
 
